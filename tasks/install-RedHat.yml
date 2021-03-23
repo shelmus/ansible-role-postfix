@@ -1,0 +1,28 @@
+---
+# RedHat based systems
+# TODO: change to raw scripts for RHEL5 to get around libselinux issues
+
+- name: Update yum cache
+  package: update_cache=yes
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "6") or
+        (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+
+- name: Ensure postfix is installed
+  package: name=postfix state=present
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "6") or
+        (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+
+- name: Configure postfix
+  template:
+    src: templates/main.cf
+    dest: /etc/postfix/main.cf
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "6") or
+        (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+  notify: restart_postfix
+
+- name: Enable postfix service
+  service:
+    name: postfix
+    enabled: yes
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "6") or
+        (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")

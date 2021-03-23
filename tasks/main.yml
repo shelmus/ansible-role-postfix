@@ -1,0 +1,6 @@
+---
+# tasks file for fusion.postfix
+# - name: Include OS-specific variables.
+#   include_vars: "{{ ansible_os_family }}.yml"
+  
+- include_tasks: "install-{{ ansible_os_family }}.yml"

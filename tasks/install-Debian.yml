@@ -1,0 +1,20 @@
+---
+# Debian based systems
+- name: Update cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Ensure postfix is installed.
+  apt:
+    name: postfix
+    state: present
+
+- name: Configure postfix
+  template:
+    src: templates/main.cf
+    dest: /etc/postfix/main.cf
+  notify: restart_postfix
+
+- name: Enable postfix service
+  service:
+    name: postfix
+    enabled: yes

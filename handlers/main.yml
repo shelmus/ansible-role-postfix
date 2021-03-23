@@ -1,0 +1,6 @@
+---
+# handlers file for fusion.postfix
+- name: restart_postfix
+  service:
+    name: postfix
+    state: restarted
